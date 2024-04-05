@@ -19,8 +19,8 @@ namespace DataAccess.LinqToDb.Data
 
         public Task<UserModel?> GetUser(int id)
         {
-            return _db.Users.FirstOrDefaultAsync(s => s.Id == id);
-        }
+           return _db.Users.LoadWith(u=>u.Relations).FirstOrDefaultAsync(s => s.Id == id);           
+        }       
 
         public Task<List<UserModel>> GetUsers()
         {

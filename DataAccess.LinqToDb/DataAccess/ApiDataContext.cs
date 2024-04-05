@@ -10,7 +10,8 @@ namespace DataAccess.LinqToDb.DataAccess
         : base(options.Options) { }
 
         public ITable<UserModel> Users => this.GetTable<UserModel>();
-       
+        public ITable<RelationModel> Relatives => this.GetTable<RelationModel>();
+
     }
 
 }

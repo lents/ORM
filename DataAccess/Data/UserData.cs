@@ -27,7 +27,17 @@ namespace DataAccess.Data
 
         public async Task<UserModel?> GetUser(int id)
         {
-            var results = await _db.LoadData<UserModel, dynamic>("dbo.spUser_Get", new { Id = id });
+            // var results = await _db.LoadData<UserModel, dynamic>("dbo.spUser_Get", new { Id = id });
+            // return results.FirstOrDefault();
+            return await GetUserWithRelations(id);
+        }
+
+        public async Task<UserModel?> GetUserWithRelations(int id)
+        {
+            var results = await _db.LoadWithJoin<UserModel, RelationModel, dynamic>(
+                "SELECT u.Id, FirstName, LastName, RelationShip, r.Id, FullName FROM [User] u LEFT OUTER JOIN Relative r ON r.UserId = u.Id WHERE u.Id = @Id",
+                new { Id = id },
+                (u, r) => { u.Relations.Add(r); return u; }, "RelationShip");
             return results.FirstOrDefault();
         }
 
