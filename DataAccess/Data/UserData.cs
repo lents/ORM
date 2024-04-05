@@ -16,8 +16,14 @@ namespace DataAccess.Data
             _db = db;
         }
 
+        //public Task<IEnumerable<UserModel>> GetUsers() =>
+        //    _db.LoadData<UserModel, dynamic>("dbo.spUser_GetAll", new { });
+
         public Task<IEnumerable<UserModel>> GetUsers() =>
-            _db.LoadData<UserModel, dynamic>("dbo.spUser_GetAll", new { });
+            _db.LoadWithQuery<UserModel, dynamic>("SELECT Id, FirstName, LastName FROM [dbo].[User]", new { });
+
+        public Task<IEnumerable<UserModel>> GetUsersByFilter(string filter) =>
+            _db.LoadData<UserModel, dynamic>("dbo.spUser_GetByFilter", new { Filter = filter });
 
         public async Task<UserModel?> GetUser(int id)
         {

@@ -1,12 +1,12 @@
 ﻿
-using DataAccess.Data;
-using DataAccess.Models;
+using DataAccess.LinqToDb.Data;
+using DataAccess.LinqToDb.Models;
 
 namespace WebApi
 {
-    public static class Api
+    public static class ApiLinq
     {
-        public static void ConfigureApi(this WebApplication app)
+        public static void ConfigureApiLinq(this WebApplication app)
         {
             app.MapGet("/Users", GetUsers);
             app.MapGet("/Users/{id:int}", GetUser);

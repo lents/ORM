@@ -1,5 +1,9 @@
+using DataAccess.LinqToDb.Data;
 using DataAccess.DataAccess;
 using WebApi;
+using DataAccess.LinqToDb.DataAccess;
+using LinqToDB.AspNet;
+using LinqToDB;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
-builder.Services.AddSingleton<IUserData, UserData>();
+builder.Services.AddScoped<ISqlDataAccess, SqlDataAccess>();
+builder.Services.AddLinqToDBContext<ApiDataContext>((provider, options)
+           => options               
+               .UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddScoped<IUserData, UserData>();
 
 var app = builder.Build();
 
@@ -21,7 +28,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.ConfigureApi();
+app.ConfigureApiLinq();
 
 app.Run();
 

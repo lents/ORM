@@ -12,6 +12,15 @@ namespace DataAccess.DataAccess
         {
             _config = config;
         }
+        public async Task<IEnumerable<T>> LoadWithQuery<T, U>(
+            string storedProcedure,
+            U parameters,
+            string connectionId = "Default")
+        {
+            using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+
+            return await connection.QueryAsync<T>(storedProcedure, parameters);
+        }
 
         public async Task<IEnumerable<T>> LoadData<T, U>(
             string storedProcedure,
