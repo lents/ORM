@@ -17,6 +17,7 @@ builder.Services.AddLinqToDBContext<ApiDataContext>((provider, options)
                .UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddSingleton<IUserData, UserData>();
 builder.Services.AddScoped<DataAccess.LinqToDb.Data.IUserData, DataAccess.LinqToDb.Data.UserData>();
+builder.Services.AddScoped<DataAccess.ADO.Data.IUserData, DataAccess.ADO.Data.UserData>();
 
 var app = builder.Build();
 
@@ -29,7 +30,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.ConfigureApiLinq();
+app.ConfigureApi();
 
 app.Run();
 

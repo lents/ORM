@@ -11,6 +11,7 @@ namespace DataAccess.LinqToDb.DataAccess
 
         public ITable<UserModel> Users => this.GetTable<UserModel>();
         public ITable<RelationModel> Relatives => this.GetTable<RelationModel>();
+        public ITable<StudentModel> Students => this.GetTable<StudentModel>();
 
     }
 

@@ -19,7 +19,7 @@ namespace DataAccess.LinqToDb.Data
 
         public Task<UserModel?> GetUser(int id)
         {
-           return _db.Users.LoadWith(u=>u.Relations).FirstOrDefaultAsync(s => s.Id == id);           
+           return _db.Users.LoadWith(u => u.Relations).FirstOrDefaultAsync(s => s.Id == id);           
         }       
 
         public Task<List<UserModel>> GetUsers()
@@ -29,7 +29,11 @@ namespace DataAccess.LinqToDb.Data
 
         public Task<List<UserModel>> GetUsersByFilter(string filter)
         {
-            return _db.Users.Where(s => s.FirstName.Contains(filter) || s.LastName.Contains(filter)).ToListAsync();
+            var query = _db.Users.Where(s => s.FirstName.Contains(filter) || s.LastName.Contains(filter));
+            if (filter.Contains("category")) {
+                query = query.Where(s => s.Relations.Any());
+            }
+            return query.ToListAsync();
         }
 
         public Task InsertUser(UserModel user)
